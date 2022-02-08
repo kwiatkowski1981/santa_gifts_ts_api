@@ -1,6 +1,6 @@
-const {createPool} = require("mysql2/promise");
+import {createPool} from "mysql2/promise";
 
-const pool = createPool({
+export const pool = createPool({
     host: 'localhost',
     user: 'root',
     password: 'MariaDB1981@',
@@ -8,7 +8,3 @@ const pool = createPool({
     decimalNumbers: true,
     namedPlaceholders: true,
 });
-
-module.exports = {
-    pool,
-}

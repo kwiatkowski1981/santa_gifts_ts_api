@@ -1,4 +1,4 @@
-const express = require('express');
+import * as express from "express";
 require('express-async-errors');
 const {engine} = require('express-handlebars');
 const methodOverride = require('method-override');
