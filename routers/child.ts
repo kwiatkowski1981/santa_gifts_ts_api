@@ -1,8 +1,9 @@
-const {Router} = require("express");
-const {ChildRecord} = require("../records/child.record");
-const {GiftRecord} = require("../records/gift.record");
-const {ValidationError} = require("../utils/errors");
-const childRouter = Router();
+import {Router} from "express";
+import {ChildRecord} from "../records/child.record";
+import {GiftRecord} from "../records/gift.record";
+import {ValidationError} from "../utils/errors";
+
+export const childRouter = Router();
 
 childRouter
     .get('/', async (req, res) => {

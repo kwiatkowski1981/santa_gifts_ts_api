@@ -1,9 +1,18 @@
-const {v4: uuid} = require('uuid');
-const {pool} = require("../utils/db");
-const {ValidationError} = require("../utils/errors");
+import {v4 as uuid} from "uuid";
+import {ValidationError} from "../utils/errors";
+import {pool} from "../utils/db";
+import {GiftEntity} from "../interfaces/GiftEntity";
+import {FieldPacket} from "mysql2";
 
-class GiftRecord {
-    constructor(obj) {
+
+type GiftRecordResults = [GiftRecord[], FieldPacket[]];
+
+export class GiftRecord implements GiftEntity {
+    public id?: string;
+    public name: string;
+    public count: number;
+
+    constructor(obj: GiftEntity) {
         if (!obj.name || obj.name.length < 3 || obj.name.length > 55) {
             throw new ValidationError('Nazwa prezentu musi mieć między 3 a 55 znaków!');
         }
@@ -15,7 +24,7 @@ class GiftRecord {
         this.count = obj.count;
     }
 
-    async insert() {
+    async insert(): Promise<string> {
         if (!this.id) {
             this.id = uuid();
         }
@@ -27,30 +36,26 @@ class GiftRecord {
         return this.id;
     }
 
-    static async listAll() {
-        const [results] = await pool.execute("SELECT * FROM gifts");
+    static async listAll(): Promise<GiftRecord[]> {
+        const [results] = await pool.execute("SELECT * FROM gifts") as GiftRecordResults;
         return results.map(obj => new GiftRecord(obj));
     }
 
-    static async getOne(id) {
+    static async getOne(id: string): Promise<GiftRecord | null> {
         const [results] = await pool.execute("SELECT * FROM `gifts` WHERE `id` = :id", {
             id,
-        });
-        // jeśli długość rezultatu zapytania jest zero to zwracam null a jak nie to pierwsze z tablicy rezultatów
-        // pierwsze bo zapytanie zwraca wszystko* w postaci tablicy.
+        }) as GiftRecordResults;
+        // Jeśli długość rezultatu zapytania jest zero, to zwracam null a jak nie to pierwsze z tablicy rezultatów.
+        // Pierwsze, ponieważ zapytanie zwraca wszystko* w postaci tablicy.
         return results.length === 0? null: new GiftRecord(results[0]);
     }
 
-    async countGivenGifts() {
+    async countGivenGifts(): Promise<number> {
         const [[{count}]]  /*count[0][0].count */ =
-            await pool.execute("SELECT COUNT(*) as `count` FROM `children` WHERE `giftId` = :id", {
+            await pool.execute("SELECT COUNT(*) as count FROM children WHERE giftId = :id", {
            id: this.id,
-        });
+        }) as GiftRecordResults;
         return count;
     }
 
-}
-
-module.exports = {
-    GiftRecord,
 }

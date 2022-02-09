@@ -1,13 +1,13 @@
 import * as express from "express";
-require('express-async-errors');
-const {engine} = require('express-handlebars');
-const methodOverride = require('method-override');
-const {handleError} = require("./utils/errors");
-const {handlebarsHelpers} = require("./utils/handlebars-helpers");
-const {homeRouter} = require("./routers/home");
-const {childRouter} = require("./routers/child");
-const {giftRouter} = require("./routers/gift");
-require('./utils/db');
+import './utils/db';
+import {engine} from "express-handlebars";
+import * as methodOverride from "method-override";
+import {handleError} from "./utils/errors";
+import {handlebarsHelpers} from "./utils/handlebars-helpers";
+import {homeRouter} from "./routers/home";
+import {childRouter} from "./routers/child";
+import {giftRouter} from "./routers/gift";
+import 'express-async-errors';
 
 
 const app = express();
@@ -28,7 +28,6 @@ app.set('view engine', '.hbs');
 app.use('/', homeRouter);
 app.use('/child', childRouter);
 app.use('/gift', giftRouter);
-
 
 app.use(handleError);
 
