@@ -1,8 +1,8 @@
 import {v4 as uuid} from "uuid";
 import {ValidationError} from "../utils/errors";
 import {pool} from "../utils/db";
-import {GiftEntity} from "../interfaces/GiftEntity";
 import {FieldPacket} from "mysql2";
+import {GiftEntity} from "../types";
 
 
 type GiftRecordResults = [GiftRecord[], FieldPacket[]];

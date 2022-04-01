@@ -10,7 +10,7 @@ giftRouter
 
         res
             .status(200)
-            .render('gift/list', {
+            .json({
             giftsList,
         });
     })

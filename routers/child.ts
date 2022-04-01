@@ -13,7 +13,7 @@ childRouter
 
         res
             .status(200)
-            .render('children/list', {
+            .json({
                 childrenList,
                 giftsList,
             });
