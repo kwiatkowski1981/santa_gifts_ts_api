@@ -3,7 +3,6 @@ import 'express-async-errors';
 import * as cors from 'cors';
 import './utils/db';
 import {handleError} from "./utils/errors";
-import {homeRouter} from "./routers/home";
 import {childRouter} from "./routers/child";
 import {giftRouter} from "./routers/gift";
 
@@ -14,7 +13,6 @@ const PORT_FE = 3000;
 
 app.use(express.json());
 app.use(cors({origin: `http://${HOST}:3000`}));
-app.use('/', homeRouter);
 app.use('/child', childRouter);
 app.use('/gift', giftRouter);
 app.use(handleError);

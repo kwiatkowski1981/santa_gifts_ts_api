@@ -21,7 +21,6 @@ childRouter
     .post('/', async (req, res) => {
         const newChild = new ChildRecord(req.body);
         await newChild.insert();
-        console.log('added new child record');
         res.redirect('/child');
     })
     .patch('/gift/:childId', async (req, res) => {
