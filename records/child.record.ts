@@ -1,8 +1,8 @@
+import {ValidationError} from "../utils/errors";
 import {FieldPacket} from "mysql2";
 import {v4 as uuid} from "uuid";
-import {ChildEntity} from "../interfaces/ChildEntity";
-import {ValidationError} from "../utils/errors";
 import {pool} from "../utils/db";
+import { ChildEntity } from "../types";
 
 
 type ChildRecordResults = [ChildRecord[], FieldPacket[]];
@@ -12,8 +12,6 @@ export class ChildRecord implements ChildEntity {
     public name: string;
     public giftId: string;
 
-    // Można by było zamiast tworzenia interface podać jako typ nazwę klasy ChildRecord,
-    // która ma w sobie w sumie tylko te 3 rzeczy (id, name, giftId)
     constructor(obj: ChildEntity) {
         if (!obj.name || obj.name.length < 3 || obj.name.length > 25) {
             throw new ValidationError('Imię dziecka musi mieć między 3 a 25 znaków!');
